@@ -10,6 +10,7 @@ export class Cell {
     board: Board;
     available: boolean;
     id: number;
+    static figure: any;
 
     constructor(board: Board, x: number, y: number, color: Colors, figure: Figure | null) {
         this.x = x;
@@ -19,5 +20,13 @@ export class Cell {
         this.board = board;
         this.available = false;
         this.id = Math.random();
+    }
+
+    moveFigure(target: Cell) {
+        if (this.figure && this.figure?.canMove(target)) {
+            this.figure.moveFigure(target);
+            target.figure = this.figure;
+            this.figure = null;
+        }
     }
 }
