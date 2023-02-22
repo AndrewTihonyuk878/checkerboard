@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { Cell } from '../../modules/Cell';
 import { RootState } from '../store';
 
@@ -14,6 +14,7 @@ const BoardSlice = createSlice({
             if (action.payload) {
                 state.selectedCell = action.payload;
             }
+            return state;
         },
     },
 });

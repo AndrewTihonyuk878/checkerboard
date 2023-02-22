@@ -16,7 +16,6 @@ export class Board {
                     row.push(new Cell(this, j, i, Colors.WHITE, null)); // white cell
                 }
             }
-
             this.cells.push(row);
         }
     }

@@ -14,14 +14,7 @@ interface BoardProps {
 }
 
 const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPlayer}) => {
-    // const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
 
-    // function click(cell: Cell) {
-    //     if (cell.figure) {
-    //         setSelectedCell(cell)
-    //     }
-        
-    // }
     const dispatch = useDispatch();
     const fild = useSelector(selectfild);
 
@@ -33,13 +26,9 @@ const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPl
             updateBoard()
         } else {
             if (cell.figure?.color === currentPlayer?.color) {
-                dispatch(setSelectedCell(cell))
+                dispatch(setSelectedCell((cell)))
             }
-            
         }
-        // if (cell.figure) {
-        //     dispatch(setSelectedCell(cell))   
-        // }
     }
 
     useEffect(() => {
@@ -64,6 +53,10 @@ const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPl
                     <React.Fragment key={index}>
                         {row.map(cell => 
                             <CellComponents
+                                swapPlayer={swapPlayer}
+                                currentPlayer={currentPlayer}
+                                setBoard={setBoard}
+                                board={board}
                                 onClickCell={onClickCell}
                                 cell={cell}
                                 key={cell.id}
@@ -77,3 +70,5 @@ const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPl
 }
 
 export default BoardComponents;
+
+

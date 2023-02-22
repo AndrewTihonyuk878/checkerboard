@@ -1,39 +1,65 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Board } from '../modules/Board';
 import { Cell } from '../modules/Cell';
 import { selectfild, setSelectedCell } from '../redux/slices/BoardSlice';
+import { Player } from '../modules/Player';
+
 
 interface CellProps {
+    currentPlayer: Player | null;
+    board: Board;
+    setBoard: (board: Board) => void;
     cell: Cell;
     selected: boolean;
     onClickCell: (cell: Cell) => void;
+    swapPlayer: () => void;
 }
 
-const CellComponents: FC<CellProps> = ({cell, selected, onClickCell}) => {
+const CellComponents: FC<CellProps> = ({cell, swapPlayer, currentPlayer, setBoard, board, selected, onClickCell}) => {
 
     const dispatch = useDispatch();
-    const fildDrop = useSelector(selectfild);
+    const fild = useSelector(selectfild);
 
-    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, checker: Cell) {
-        console.log('drag', checker)
-        dispatch(setSelectedCell(checker))
+    useEffect(() => {
+        highlightCells()
+    }, [fild])
+
+    function highlightCells() {
+        board.highlightCells(fild)
+        updateBoard()
     }
-    
-    
-    function dropHandler(e: React.DragEvent<HTMLDivElement>, checker: Cell) {
+
+    function updateBoard() {
+        const newBoard = board.getCopyBoard()
+        setBoard(newBoard)
+    }
+
+    function dragStartHandler(e: React.DragEvent<HTMLDivElement>, cell: Cell) {
+        console.log('DRAG', cell)
+        dispatch(setSelectedCell(null))
+        updateBoard()
+    }
+
+    function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
         e.preventDefault()
-        console.log('drop', checker)
-        dispatch(setSelectedCell(checker))
+    }
+
+    function dropHandler(e: React.DragEvent<HTMLDivElement>, cell: Cell)  {
+        console.log('DROP', cell)
+        if (fild && fild !== cell && fild.figure?.canMove(cell)) {
+            fild.moveFigure(cell)
+            swapPlayer()
+        }
+        updateBoard()
     }
 
     return (
         <div 
-            onDragStart={(e) => dragStartHandler(e, cell)}
-            // onDragLeave={(e) => dragLeaveHandler(e)}
-            // onDragEnd={(e) => dragEndHandler(e)}
-            // onDragOver={(e) => dragOverHandler(e)}
-            onDrop={(e) => dropHandler(e, cell)}
             draggable={true}
+            onDragStart={(e) => dragStartHandler(e, cell)}
+            onDragOver={(e) => dragOverHandler(e)}
+            onDrop={(e) => dropHandler(e, cell)}
             className={['cell', cell.color, selected ? 'selected' : ''].join(' ')}
             onClick={() => onClickCell(cell)}
             >
@@ -45,10 +71,4 @@ const CellComponents: FC<CellProps> = ({cell, selected, onClickCell}) => {
 
 export default CellComponents;
 
-function swapPlayer() {
-    throw new Error('Function not implemented.');
-}
-function updateBoard() {
-    throw new Error('Function not implemented.');
-}
 
