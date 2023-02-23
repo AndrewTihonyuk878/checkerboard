@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .board {
@@ -42,4 +43,14 @@
 
 .selected {
   background-color: #20cde4
+}
+
+.configuration {
+  margin-top: 20px;
+}
+
+.conf-input {
+  width: calc(64px * 8);
+  height: 64px;
+  font-size: 26px;
 }

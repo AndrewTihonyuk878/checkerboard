@@ -5,6 +5,7 @@ import CellComponents from './CellComponents';
 import { setSelectedCell, selectfild } from '../redux/slices/BoardSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Player } from '../modules/Player';
+import ConfigurationComponent from './ConfigurationComponent';
 
 interface BoardProps {
     board: Board;
@@ -64,6 +65,11 @@ const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPl
                         )}
                     </React.Fragment>
                 )}
+            </div>
+            <div className='configuration'>
+                <ConfigurationComponent
+                    board={board}
+                    setBoard={setBoard}/>
             </div>
         </div>
     )

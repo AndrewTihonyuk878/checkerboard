@@ -40,6 +40,27 @@ export class Board {
         return this.cells[y][x];
     }
 
+    public configurCells(symbol: string) {}
+
+    public filterSymbol(text: string) {
+        switch (text) {
+            case 'W':
+                new Checker(Colors.WHITE, this.getCell(1, 0));
+                break;
+            case 'WK':
+                new King(Colors.WHITE, this.getCell(1, 2));
+                break;
+            case 'B':
+                new Checker(Colors.WHITE, this.getCell(1, 0));
+                break;
+            case 'BA':
+                new King(Colors.BLACK, this.getCell(3, 4));
+                break;
+            default:
+                return null;
+        }
+    }
+
     public addFigures() {
         new Checker(Colors.WHITE, this.getCell(1, 0));
         new Checker(Colors.WHITE, this.getCell(3, 0));
