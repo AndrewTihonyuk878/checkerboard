@@ -2,8 +2,6 @@ import React, { FC, useEffect, useState } from 'react'
 import { Board } from '../modules/Board';
 import { Cell } from '../modules/Cell';
 import CellComponents from './CellComponents';
-import { setSelectedCell, selectfild } from '../redux/slices/BoardSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { Player } from '../modules/Player';
 import ConfigurationComponent from './ConfigurationComponent';
 
@@ -16,28 +14,27 @@ interface BoardProps {
 
 const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPlayer}) => {
 
-    const dispatch = useDispatch();
-    const fild = useSelector(selectfild);
+    const [selectedCell, setSelectedCell] = useState<Cell | null>(null)
 
-    const onClickCell = (cell: Cell) => {
-        if (fild && fild !== cell && fild.figure?.canMove(cell)) {
-            fild.moveFigure(cell)
+    const onClickCell = (target: Cell) => {
+        if (selectedCell && selectedCell !== target && selectedCell.figure?.canMove(target)) {
+            selectedCell.moveFigure(target)
             swapPlayer()
-            dispatch(setSelectedCell(null))
+            setSelectedCell(null)
             updateBoard()
         } else {
-            if (cell.figure?.color === currentPlayer?.color) {
-                dispatch(setSelectedCell((cell)))
+            if (target.figure?.color === currentPlayer?.color) {
+                setSelectedCell(target)
             }
         }
     }
 
     useEffect(() => {
         highlightCells()
-    }, [fild])
+    }, [selectedCell])
 
     function highlightCells() {
-        board.highlightCells(fild)
+        board.highlightCells(selectedCell)
         updateBoard()
     }
 
@@ -54,6 +51,8 @@ const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPl
                     <React.Fragment key={index}>
                         {row.map(cell => 
                             <CellComponents
+                                setSelectedCell={setSelectedCell}
+                                selectedCell={selectedCell}
                                 swapPlayer={swapPlayer}
                                 currentPlayer={currentPlayer}
                                 setBoard={setBoard}
@@ -61,15 +60,10 @@ const BoardComponents: FC<BoardProps> = ({board, setBoard, currentPlayer, swapPl
                                 onClickCell={onClickCell}
                                 cell={cell}
                                 key={cell.id}
-                                selected={cell.x === fild?.x && cell.y === fild?.y}/>
+                                selected={cell.x === selectedCell?.x && cell.y === selectedCell?.y}/>
                         )}
                     </React.Fragment>
                 )}
-            </div>
-            <div className='configuration'>
-                <ConfigurationComponent
-                    board={board}
-                    setBoard={setBoard}/>
             </div>
         </div>
     )

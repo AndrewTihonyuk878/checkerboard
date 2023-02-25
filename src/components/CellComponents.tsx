@@ -1,12 +1,12 @@
-import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
 import { Board } from '../modules/Board';
 import { Cell } from '../modules/Cell';
-import { selectfild, setSelectedCell } from '../redux/slices/BoardSlice';
 import { Player } from '../modules/Player';
 
 
 interface CellProps {
+    selectedCell: Cell | null;
+    setSelectedCell: (target: Cell | null) => void;
     currentPlayer: Player | null;
     board: Board;
     setBoard: (board: Board) => void;
@@ -16,17 +16,14 @@ interface CellProps {
     swapPlayer: () => void;
 }
 
-const CellComponents: FC<CellProps> = ({cell, swapPlayer, currentPlayer, setBoard, board, selected, onClickCell}) => {
+const CellComponents: FC<CellProps> = ({cell, selectedCell, setSelectedCell, swapPlayer, currentPlayer, setBoard, board, selected, onClickCell}) => {
 
-    const dispatch = useDispatch();
-    const fild = useSelector(selectfild);
-
-    useEffect(() => {
-        highlightCells()
-    }, [fild])
+    // useEffect(() => {
+    //     highlightCells()
+    // }, [selectedCell])
 
     function highlightCells() {
-        board.highlightCells(fild)
+        board.highlightCells(selectedCell)
         updateBoard()
     }
 
@@ -37,21 +34,18 @@ const CellComponents: FC<CellProps> = ({cell, swapPlayer, currentPlayer, setBoar
 
     function dragStartHandler(e: React.DragEvent<HTMLDivElement>, cell: Cell) {
         console.log('DRAG', cell)
-        dispatch(setSelectedCell(null))
-        updateBoard()
     }
 
     function dragOverHandler(e: React.DragEvent<HTMLDivElement>) {
         e.preventDefault()
     }
 
-    function dropHandler(e: React.DragEvent<HTMLDivElement>, cell: Cell)  {
-        console.log('DROP', cell)
-        if (fild && fild !== cell && fild.figure?.canMove(cell)) {
-            fild.moveFigure(cell)
+    function dropHandler(e: React.DragEvent<HTMLDivElement>, target: Cell)  {
+        console.log('DROP', target)
+        if (selectedCell && selectedCell !== target && selectedCell.figure?.canMove(target)) {
+            selectedCell.moveFigure(target)
             swapPlayer()
         }
-        updateBoard()
     }
 
     return (

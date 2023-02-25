@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectfild } from '../redux/slices/BoardSlice';
 import { Board } from '../modules/Board';
 import { Cell } from '../modules/Cell';
 import { Colors } from '../modules/Colors';
@@ -12,11 +11,8 @@ interface ConfigurationProps {
 
 const ConfigurationComponent: FC<ConfigurationProps> = ({board, setBoard}) => {
 
-    const [value, setValue] = useState('')
-
-    const dispatch = useDispatch();
-    const fild = useSelector(selectfild);
-
+    const [value, setValue] = useState('.w.w.w....w......W.b.W.............B..........b....b....b.......')
+    console.log(value)
     return(
 
         <div>

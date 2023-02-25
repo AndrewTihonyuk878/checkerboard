@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './App.scss';
 import BoardComponents from './components/BoardComponents';
+import ConfigurationComponent from './components/ConfigurationComponent';
 import { Board } from './modules/Board';
 import { Colors } from './modules/Colors';
 import { Player } from './modules/Player';
@@ -37,6 +38,11 @@ function App() {
         currentPlayer={currentPlayer}
         swapPlayer={swapPlayer}
         />
+      <div className='configuration'>
+          <ConfigurationComponent
+              board={board}
+              setBoard={setBoard}/>
+      </div>
     </div>
   );
 }
