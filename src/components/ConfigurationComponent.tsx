@@ -15,13 +15,14 @@ const ConfigurationComponent: FC<ConfigurationProps> = ({board, setBoard}) => {
     console.log(value)
     return(
 
-        <div>
-            <p><b>.</b> - empty field, <b>w</b> - white piece, <b>wk</b> - white king, <b>b</b> - black piece, <b>bk</b> - black king</p><br/>
+        <div className='wrapper_input'>
             <input
             value={value}
             onChange={(e) => setValue(e.target.value)} 
             className='conf-input' 
             type="text" />
+            <br />
+            <p><b>.</b> - empty field, <b>w</b> - white piece, <b>W</b> - white king, <b>b</b> - black piece, <b>B</b> - black king</p>
         </div>
         
     )

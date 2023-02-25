@@ -50,8 +50,32 @@
   margin-top: 20px;
 }
 
+.wrapper_input {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 0 15px;
+}
+
 .conf-input {
   width: calc(64px * 8);
   height: 64px;
   font-size: 22px;
+}
+
+@media(max-width: 768px) {
+  .conf-input {
+    width: 400px;
+    font-size: 17px;
+    height: 48px;
+  }
+  .board {
+    width: calc(48px * 8);
+    height: calc(48px * 8);
+  }
+  .cell {
+    width: 48px;
+    height: 48px;
+  }
 }
